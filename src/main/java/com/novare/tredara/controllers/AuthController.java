@@ -48,9 +48,9 @@ public class AuthController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-            System.out.println("email : "+loginRequest.getEmail());
+//            System.out.println("email : "+loginRequest.getEmail());
             String jwt = jwtUtils.generateJwtToken(userDetails);
-            System.out.println("jwt : "+jwt);
+//            System.out.println("jwt : "+jwt);
 
             String role = userDetails.getAuthorities().iterator().next().getAuthority();
             UserInfoResponse response = new UserInfoResponse(userDetails.getId(),
