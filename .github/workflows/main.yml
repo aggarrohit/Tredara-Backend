@@ -1,21 +1,17 @@
+---
 name: Deploy Spring Boot App to EC2
-
 on:
   push:
     branches:
       - master
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
       - name: Build with Maven
         run: mvn clean package
-
       - name: Build and Push Docker Image
         run: |
           docker build -t aggarrohit/tredara-backend-ci:v1 .
@@ -23,18 +19,20 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-
       - name: SSH into EC2 and Deploy
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          run: |
+          run: >
             docker stop tredara-backend-ci-container || true
+
             docker rm tredara-backend-ci-container || true
+
             docker pull aggarrohit/tredara-backend-ci:v1
-	    docker run -e "cors.allowed-origin=http://localhost:5173/" \
-		       -e "spring.datasource.url=jdbc:mysql://16.170.235.159:3306/tradera" \
-		       -e "spring.datasource.password=mysqlrootpw" \ 
-		       -p 8080:8080 -d aggarrohit/tredara-backend-ci:v1
+
+            docker run -e "cors.allowed-origin=http://localhost:5173/" \
+                       -e "spring.datasource.url=jdbc:mysql://16.170.235.159:3306/tradera" \
+                       -e "spring.datasource.password=mysqlrootpw" \ 
+                       -p 8080:8080 -d aggarrohit/tredara-backend-ci:v1
