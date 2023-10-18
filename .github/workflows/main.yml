@@ -30,7 +30,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
+          run: |
             docker stop tredara-backend-ci-container || true
             docker rm tredara-backend-ci-container || true
             docker pull aggarrohit/tredara-backend-ci:v1
