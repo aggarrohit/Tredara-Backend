@@ -10,8 +10,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 17
+          
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Build with Maven
         run: mvn clean package
@@ -34,7 +40,7 @@ jobs:
             docker stop tredara-backend-ci-container || true
             docker rm tredara-backend-ci-container || true
             docker pull aggarrohit/tredara-backend-ci:v1
-			docker run 	-e cors.allowed-origin=http://localhost:5173/ \
-   					-e spring.datasource.url=jdbc:mysql://16.170.235.159:3306/tradera \
-       					-e spring.datasource.password=mysqlrootpw 
-	   				-p 8080:8080 -d aggarrohit/tredara-backend-ci:v1
+			docker run -e "cors.allowed-origin=http://localhost:5173/" \
+                       -e "spring.datasource.url=jdbc:mysql://16.170.235.159:3306/tradera" \
+       	               -e "spring.datasource.password=mysqlrootpw" \ 
+	   				   -p 8080:8080 -d aggarrohit/tredara-backend-ci:v1
