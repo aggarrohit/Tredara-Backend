@@ -109,7 +109,7 @@ class BidServiceTest {
     @Test
     void addBid_shouldFailIfItemIdNotValid(){
         BidDto bidDto = new BidDto();
-        User user = new User(101L,"aggarrohit@gmail.com","rohit agarwal","password", ERole.ROLE_CUSTOMER,null,null,null);
+        User user = new User(101L,"aggarrohit@gmail.com","rohit agarwal","password", ERole.ROLE_CUSTOMER,null,null,null,null);
 
         Item item = new Item();
         item.setId(1L);
